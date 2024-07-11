@@ -1,0 +1,7 @@
+# playbook.yml
+- hosts: minipcs
+  become: yes
+  tasks:
+    - name: Update apt packages
+      apt:
+        update_cache: yes
