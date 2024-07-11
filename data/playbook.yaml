@@ -1,7 +1,20 @@
----
-- hosts: all
+- hosts: minipcs
   become: yes
   tasks:
-    - name: update apt packages
+    - name: Ensure unattended-upgrades is installed
+      apt:
+        name: unattended-upgrades
+        state: present
+
+    - name: Enable unattended-upgrades
+      lineinfile:
+        dest: /etc/apt/apt.conf.d/20auto-upgrades
+        line: 'APT::Periodic::Unattended-Upgrade "1";'
+        create: yes
+
+    - name: Update apt cache
       apt:
         update_cache: yes
+
+    - name: Apply unattended-upgrades
+      command: unattended-upgrade -v
